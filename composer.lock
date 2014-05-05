@@ -7,16 +7,16 @@
     "packages": [
         {
             "name": "spomky-labs/oauth2-interface",
-            "version": "v1.0.0-alpha1",
+            "version": "v1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/oauth2-interface.git",
-                "reference": "e55c100f36272e17312629d63d457da1bcd2ccc7"
+                "reference": "feabf9159c1bb66a88ddb6e02a7c19c5f5112a13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/oauth2-interface/zipball/e55c100f36272e17312629d63d457da1bcd2ccc7",
-                "reference": "e55c100f36272e17312629d63d457da1bcd2ccc7",
+                "url": "https://api.github.com/repos/Spomky-Labs/oauth2-interface/zipball/feabf9159c1bb66a88ddb6e02a7c19c5f5112a13",
+                "reference": "feabf9159c1bb66a88ddb6e02a7c19c5f5112a13",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             "keywords": [
                 "oauth2"
             ],
-            "time": "2014-05-03 10:26:51"
+            "time": "2014-05-05 14:57:27"
         },
         {
             "name": "spomky-labs/oauth2-server",
@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/oauth2-server.git",
-                "reference": "9e002262f0717966472ef8231132b7899b1df0da"
+                "reference": "65bcbcd7e061aad741e0403095fe083054ce271d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/oauth2-server/zipball/9e002262f0717966472ef8231132b7899b1df0da",
-                "reference": "9e002262f0717966472ef8231132b7899b1df0da",
+                "url": "https://api.github.com/repos/Spomky-Labs/oauth2-server/zipball/65bcbcd7e061aad741e0403095fe083054ce271d",
+                "reference": "65bcbcd7e061aad741e0403095fe083054ce271d",
                 "shasum": ""
             },
             "require": {
@@ -111,7 +111,7 @@
             "keywords": [
                 "oauth2"
             ],
-            "time": "2014-05-03 11:42:57"
+            "time": "2014-05-05 15:31:09"
         },
         {
             "name": "symfony/http-foundation",

@@ -2,13 +2,13 @@
 
 namespace OAuth2\Client;
 
-use OAuth2\Client\IOAuth2ConfidentialClient;
+use OAuth2\Client\IOAuth2PasswordClient;
 use OAuth2\Client\OAuth2RegisteredClient;
 use OAuth2\Util\OAuth2RequestBody;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\Exception\OAuth2BadRequestException;
 
-class OAuth2PasswordClient extends OAuth2RegisteredClient implements IOAuth2ConfidentialClient
+abstract class OAuth2PasswordClient extends OAuth2RegisteredClient implements IOAuth2PasswordClient
 {
     protected $secret;
 
@@ -18,22 +18,7 @@ class OAuth2PasswordClient extends OAuth2RegisteredClient implements IOAuth2Conf
         parent::__construct($publicId, $allowedGrantTypes, $redirectUris);
     }
 
-
-    /**
-     * @param string $secret
-     */
-    public function setSecret($secret) {
-
-        $this->secret = $secret;
-        return $this;
-    }
-
-    public function getSecret() {
-
-        return $this->secret;
-    }
-
-    public function checkCredentials(Request $request) {
+    protected function getCredentials(Request $request) {
 
         if (!$request->isSecure()) {
             throw new OAuth2BadRequestException('invalid_request', 'The request must be secured');
@@ -56,9 +41,7 @@ class OAuth2PasswordClient extends OAuth2RegisteredClient implements IOAuth2Conf
             return false;
         }
 
-        $credential = current($credentials);
-
-        return ($credential['client_id'] === $this->getPublicId()) && ($credential['client_secret'] === $this->getSecret());
+        return current($credentials);
     }
 
     protected function findCredentialsFromAuthenticationScheme(Request $request) {
