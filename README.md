@@ -15,34 +15,94 @@ Password Client for OAuth2 Server
 
 This library adds a new type of client for OAuth2 Server: Password Client.
 
-This is a confidential client identified with its client_id and a password.
+This is a confidential client identified with its ID and a password.
 
 # Prerequisites #
 
 This library needs OAuth2 Server.
 
+It has been tested on `PHP 5.3` to `PHP 5.6` and `HHVM`.
+
 # Installation #
 
-Installation is a quick 3 steps process:
+Installation is a quick 2 steps process:
 
 * Download and install the library
-* Extend with your classes
-* Add the client type support to your OAuth2 Server
+* Extend with your class
 
 ##Step 1: Install the library##
 
-The preferred way to install this bundle is to rely on Composer. Just check on Packagist the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+The preferred way to install this bundle is to rely on Composer. Just check on Packagist the version you want to install (in the following example, we used the stable release) and add it to your `composer.json`:
 
     {
         "require": {
             // ...
-            "spomky-labs/oauth2-server-password-client": "1.0.*@dev"
+            "spomky-labs/oauth2-server-password-client": "1.0.*"
         }
     }
 
-##Step 2: Create your classes##
+##Step 2: Create your Client class##
 
-This library needs to persist clients to your filesystem or database.
+This library provides an abstract class to ease your work: `OAuth2\Client\OAuth2PasswordClient`.
 
-Your first job, then, is to create this class for your application.
-This class can look and act however you want: add any properties or methods you find useful.
+You can extend it or create your own class. You just need to define how to store passwords and a way to check them when requested.
+
+Feel free to add all setters and getters you need.
+
+It the following example, we store a hash (SHA-256) of the password.
+	
+	<?php
+	
+	namespace ACME\MyOAuth2Server\Client;
+	
+	use OAuth2\Client\OAuth2PasswordClient;
+	use Symfony\Component\HttpFoundation\Request;
+	
+	class MyPasswordClient extends OAuth2PasswordClient
+	{
+	    public function setSecret($secret) {
+	
+	        $this->secret = md5($secret);
+	        return $this;
+	    }
+	
+	    public function checkCredentials(Request $request) {
+	
+	        $credential = $this->getCredentials($request);
+	
+	        return ($credential['client_id'] === $this->getPublicId()) && ( md5($credential['client_secret']) === $this->secret);
+	    }
+	}
+
+
+It this another example, we store a salt and use it to encrypt the password.
+	
+	<?php
+	
+	namespace ACME\MyOAuth2Server\Client;
+	
+	use OAuth2\Client\OAuth2PasswordClient;
+	use Symfony\Component\HttpFoundation\Request;
+	
+	class MyPasswordClient extends OAuth2PasswordClient
+	{
+	    protected $salt;
+
+	    public function setSecret($secret) {
+	
+			$this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+	        $this->secret = hash('sha256', $this->salt.$secret);
+	        return $this;
+	    }
+	
+	    public function checkCredentials(Request $request) {
+	
+	        $credential = $this->getCredentials($request);
+	
+	        return ($credential['client_id'] === $this->getPublicId()) && ( hash('sha256', $this->salt.$credential['client_secret']) === $this->secret);
+	    }
+	}
+
+And voilà!
+
+Now, you just have to store your clients with your ClientManager and you are ready to use them.
