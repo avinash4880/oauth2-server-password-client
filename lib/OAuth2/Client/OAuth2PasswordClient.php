@@ -25,12 +25,15 @@ abstract class OAuth2PasswordClient extends OAuth2RegisteredClient implements IO
         }
 
         $credentials = array();
-        if (is_array($credential = $this->findCredentialsFromAuthenticationScheme($request))) {
-            $credentials[] = $credential;
-        }
+        $methods = array(
+            'findCredentialsFromAuthenticationScheme',
+            'findCredentialsFromRequestBody',
+        );
 
-        if (is_array($credential = $this->findCredentialsFromRequestBody($request))) {
-            $credentials[] = $credential;
+        foreach ($methods as $method) {
+            if (is_array($credential = $this->$method($request))) {
+                $credentials[] = $credential;
+            }
         }
 
         if (count($credentials) > 1) {
