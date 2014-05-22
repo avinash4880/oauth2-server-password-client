@@ -10,14 +10,6 @@ use OAuth2\Exception\OAuth2BadRequestException;
 
 abstract class OAuth2PasswordClient extends OAuth2RegisteredClient implements IOAuth2PasswordClient
 {
-    protected $secret;
-
-    public function __construct($publicId, $secret, array $allowedGrantTypes = array(), array $redirectUris = array()) {
-
-        $this->setSecret($secret);
-        parent::__construct($publicId, $allowedGrantTypes, $redirectUris);
-    }
-
     protected function getCredentials(Request $request) {
 
         if (!$request->isSecure()) {

@@ -12,8 +12,7 @@
         }
     ],
     "require": {
-        "spomky-labs/oauth2-server": "1.0.*@alpha",
-        "spomky-labs/oauth2-interface": "1.0.*@beta"
+        "spomky-labs/oauth2-server": "1.0.*@alpha"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
